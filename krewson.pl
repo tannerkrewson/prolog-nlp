@@ -6,37 +6,39 @@
 % Phrases
 %
 
-n(X, Y) :- n(X), n(Y).
-n(X, Y) :- nsn(X), n(Y).
+n(X, Z) :- n(X, Y), n(Y, Z).
+n(X, Z) :- nsn(X, Y), n(Y, Z).
 
-nsn(X, Y) :- nsn(X), nsn(Y).
-nsn(X, Y) :- adj(X), nsn(Y).
+nsn(X, Z) :- nsn(X, Y), nsn(Y, Z).
+nsn(X, Z) :- adj(X, Y), nsn(Y, Z).
 
-adj(X, Y) :- qual(X), adj(Y).
+adj(X, Z) :- qual(X, Y), adj(Y, Z).
 
-np(X, Y) :- det(X), n(Y).
+np(X, Z) :- det(X, Y), n(Y, Z).
 np(X) :- pro(X).
 np(X) :- nsn(X).
-np(X, Y) :- np(X), pp(Y).
-np(X, Y) :- det(X), nsn(Y).
-np(X, Y) :- det(X), n(Y).
-np(X, Y, Z) :- np(X), conj(Y), np(Z).
+np(X, Z) :- np(X, Y), pp(Y, Z).
+np(X, Z) :- det(X, Y), nsn(Y, Z).
+np(X, Z) :- det(X, Y), n(Y, Z).
+% np(X, Y, Z) :- np(X, Y), conj(Y, Z), np(Z).
 
-vp(X, Y) :- v(X), np(Y).
-vp(X, Y) :- vp(X), pp(Y).
-vp(X) :- v(X).
-vp(X, Y) :- adv(X), vp(Y).
-vp(X, Y) :- aux(X), vp(Y).
-vp(X, Y, Z) :- vp(X), conj(Y), vp(Z).
-vp(X, Y) :- vp(X), adj(Y).
+vp(X, Z) :- v(X, Y), np(Y, Z).
+vp(X, Z) :- vp(X, Y), pp(Y, Z).
+vp(X) :- v(X, Y).
+vp(X, Z) :- adv(X, Y), vp(Y, Z).
+vp(X, Z) :- aux(X, Y), vp(Y, Z).
+% vp(X, Y, Z) :- vp(X, Y), conj(Y, Z), vp(Z).
+vp(X, Z) :- vp(X, Y), adj(Y, Z).
 
-pp(X, Y) :- p(X), np(Y).
+pp(X, Z) :- p(X, Y), np(Y, Z).
 
-subc(X, Y) :- sub(X), s(Y).
+subc(X, Z) :- sub(X, Y), s(Y, Z).
 
-s(X, Y) :- np(X), vp(Y).
-s(X, Y) :- subc(X), s(Y).
-s(X, Y, Z) :- s(X), conj(Y), s(Z).
+s(X, Z) :- np(X, Y), vp(Y, Z).
+s(X, Z) :- subc(X, Y), s(Y, Z).
+% s(X, Y, Z) :- s(X, Y), conj(Y, Z), s(Z).
+
+valid(X) :- s(X, [ ]).
 
 %
 % Words
@@ -56,25 +58,25 @@ s(X, Y, Z) :- s(X), conj(Y), s(Z).
 % sub - Subordinating conjunction
 % subc - clause with sub
 
-n(anything).
-aux(could).
-v(be).
-p(behind).
-n(those).
-nsn(doors).
+n([anything|X], X).
+aux([could|X], X).
+v([be|X], X).
+p([behind|X], X).
+n([those|X], X).
+nsn([doors|X], X).
 
-pro(we).
-aux(could).
-aux(have).
-v(been).
-adv(more).
-adj(relaxed).
-conj(but).
-pro(we).
-verb(were).
-adv(already).
-n(running).
-adj(late).
+pro([we|X], X).
+aux([could|X], X).
+aux([have|X], X).
+v([been|X], X).
+adv([more|X], X).
+adj([relaxed|X], X).
+conj([but|X], X).
+pro([we|X], X).
+verb([were|X], X).
+adv([already|X], X).
+n([running|X], X).
+adj([late|X], X).
 
 
 /*
