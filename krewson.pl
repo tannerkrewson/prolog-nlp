@@ -3,6 +3,21 @@
 %
 
 %
+% Test Commands
+%
+
+/*
+valid([anything, could, be, behind, those, doors]).
+valid([we, could, have, been, more, relaxed, but, we, were, already, running, late]).
+valid([we, had, potatoes, of, many, kinds]).
+valid([those, were, some, really, good, potatoes]).
+**valid([sweet, potato, casserole, is, my, favorite, Thanksgiving, side, dish]).
+valid([she, knows, the, secret, to, most, of, the, family, recipes]).
+valid([she, is, coming, here, soon]).
+**valid([after, we, had, finished, everyone, relaxed, and, talked, to, family]).
+*/
+
+%
 % Phrases
 %
 
