@@ -1,5 +1,5 @@
 %
-% Project 1 - Tanner Krewson
+% Project 1 NLP - Tanner Krewson
 %
 
 %
@@ -7,6 +7,7 @@
 %
 
 /*
+
 valid([anything, could, be, behind, those, doors]).
 valid([we, could, have, been, more, relaxed, but, we, were, already, running, late]).
 valid([we, had, potatoes, of, many, kinds]).
@@ -15,6 +16,7 @@ valid([sweet, potato, casserole, is, my, favorite, Thanksgiving, side, dish]).
 valid([she, knows, the, secret, to, most, of, the, family, recipes]).
 valid([she, is, coming, here, soon]).
 valid([after, we, had, finished, everyone, relaxed, and, talked, to, family]).
+
 */
 
 %
@@ -23,12 +25,12 @@ valid([after, we, had, finished, everyone, relaxed, and, talked, to, family]).
 
 n([X, Y | E], E) :- n(X), n(Y).
 n([X, Y | E], E) :- nsn(X), n(Y).
-n([X | Y], E) :- n(X).
+n([X | _Y], _E) :- n(X).
 
 nsn([X, Y | E], E) :- nsn(X), nsn(Y).
 nsn([X, Y | E], E) :- adj(X), nsn(Y).
 nsn([X, Y | E], E) :- adj(X), nsn(Y, E).
-nsn([X | Y], E) :- nsn(X).
+nsn([X | _Y], _E) :- nsn(X).
 
 adj([X, Y | E], E) :- qual(X), adj(Y).
 
@@ -37,7 +39,6 @@ np([X | E], E) :- pro(X).
 np([X | E], E) :- n(X).
 np([X | E], E) :- nsn(X).
 np([X | E], E) :- nsn(X, E).
-% np(X, Z) :- np(X, Y), pp(Y, Z).
 np([X, Y | E], E) :- det(X), nsn(Y).
 np([X | Y], E) :- det(X), nsn(Y, E).
 np([X, Y | E], E) :- det(X), n(Y).
@@ -46,13 +47,12 @@ np([X, Y | E], E) :- adj(X), n(Y).
 np([X | Y], E) :- adj(X), n(Y, E).
 np(X, Y, Z) :- np(X, [ ]), conj(Y), np(Z, [ ]).
 
-vp([X, Y | Z], E) :- v(X), np(Y, Z).
-% vp(X, Z) :- vp(X, Y), pp(Y, Z).
-vp([X | Y], E) :- v(X).
+vp([X, Y | Z], _E) :- v(X), np(Y, Z).
+vp([X | _Y], _E) :- v(X).
 vp([X | Y], E) :- adv(X), vp(Y, E).
 vp([X | Y], E) :- aux(X), vp(Y, E).
+vp([X, Y | _Z], _E) :- vp(X, [ ]), adj(Y).
 vp(X, Y, Z) :- vp(X, [ ]), conj(Y), vp(Z, [ ]).
-vp([X, Y | Z], E) :- vp(X, [ ]), adj(Y).
 
 pp([X, Y | E], E) :- p(X), np(Y, E).
 
@@ -82,75 +82,65 @@ valid(X) :- s(X, [ ]).
 % sub - Subordinating conjunction
 % subc - clause with sub
 
-n(anything).
-aux(could).
-v(be).
-p(behind).
-n(those).
-nsn(doors).
-
-pro(we).
-aux(could).
-aux(have).
-v(been).
-adv(more).
-adj(relaxed).
-conj(but).
-pro(we).
-v(were).
-adv(already).
-n(running).
-adj(late).
-
-
-pro(we).
-v(had).
-nsn(potatoes).
-p(of).
-adv(many).
-nsn(kinds).
-
-n(those).
-v(were).
-det(some).
-qual(really).
-adj(good).
-nsn(potatoes).
-
-adj(sweet).
-n(potato).
-n(casserole).
-v(is).
-det(my).
 adj(favorite).
-n(thanksgiving).
-n(side).
-n(dish).
+adj(good).
+adj(late).
+adj(relaxed).
+adj(sweet).
 
-pro(she).
-v(knows).
-det(the).
-n(secret).
-p(to).
-pro(most).
-p(of).
-det(the).
-n(family).
-n(recipes).
-
-pro(she).
-v(is).
-v(coming).
+adv(already).
 adv(here).
+adv(many).
+adv(more).
 adv(soon).
 
-sub(after).
-pro(we).
+aux(could).
 aux(had).
-v(finished).
-nsn(everyone).
-v(relaxed).
+aux(have).
+
 conj(and).
-v(talked).
-p(to).
+conj(but).
+
+det(my).
+det(some).
+det(the).
+
+n(anything).
+n(casserole).
+n(dish).
 n(family).
+n(potato).
+n(recipes).
+n(running).
+n(secret).
+n(side).
+n(thanksgiving).
+n(those).
+
+nsn(doors).
+nsn(everyone).
+nsn(kinds).
+nsn(potatoes).
+
+p(behind).
+p(of).
+p(to).
+
+pro(most).
+pro(she).
+pro(we).
+
+qual(really).
+
+sub(after).
+
+v(be).
+v(been).
+v(coming).
+v(finished).
+v(had).
+v(is).
+v(knows).
+v(relaxed).
+v(talked).
+v(were).
