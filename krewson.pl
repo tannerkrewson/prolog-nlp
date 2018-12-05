@@ -11,10 +11,10 @@ valid([anything, could, be, behind, those, doors]).
 valid([we, could, have, been, more, relaxed, but, we, were, already, running, late]).
 valid([we, had, potatoes, of, many, kinds]).
 valid([those, were, some, really, good, potatoes]).
-**valid([sweet, potato, casserole, is, my, favorite, Thanksgiving, side, dish]).
+valid([sweet, potato, casserole, is, my, favorite, Thanksgiving, side, dish]).
 valid([she, knows, the, secret, to, most, of, the, family, recipes]).
 valid([she, is, coming, here, soon]).
-**valid([after, we, had, finished, everyone, relaxed, and, talked, to, family]).
+valid([after, we, had, finished, everyone, relaxed, and, talked, to, family]).
 */
 
 %
@@ -42,6 +42,8 @@ np([X, Y | E], E) :- det(X), nsn(Y).
 np([X | Y], E) :- det(X), nsn(Y, E).
 np([X, Y | E], E) :- det(X), n(Y).
 np([X | Y], E) :- det(X), n(Y, E).
+np([X, Y | E], E) :- adj(X), n(Y).
+np([X | Y], E) :- adj(X), n(Y, E).
 np(X, Y, Z) :- np(X, [ ]), conj(Y), np(Z, [ ]).
 
 vp([X, Y | Z], E) :- v(X), np(Y, Z).
@@ -54,10 +56,10 @@ vp([X, Y | Z], E) :- vp(X, [ ]), adj(Y).
 
 pp([X, Y | E], E) :- p(X), np(Y, E).
 
-subc([X, Y | E], E) :- sub(X), s(Y, E).
+subc([X | Y], E) :- sub(X), s(Y, E).
 
 s(X, Z) :- np(X, Y), vp(Y, Z).
-s([X, Y | E], E) :- subc(X, [ ]), s(Y, E).
+s(X, Z) :- subc(X, Y), s(Y, Z).
 s([X, Y, Z | E], E) :- s(X, [ ]), conj(Y), s(Z, [ ]).
 
 valid(X) :- s(X, [ ]).
